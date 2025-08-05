@@ -1,5 +1,17 @@
 # Mattermost Chat Application
 
+[![Docker Compose](https://img.shields.io/badge/docker--compose-v2.0%2B-blue?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Mattermost Team Edition](https://img.shields.io/badge/Mattermost-7.0-orange?logo=mattermost&logoColor=white)](https://mattermost.com/download/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/mattermost/mattermost-team-edition?logo=docker&logoColor=white)](https://hub.docker.com/r/mattermost/mattermost-team-edition)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![License: JIN](https://img.shields.io/badge/License-JIN-green.svg?logo=opensource)](./LICENSE)
+
+> ⚙️ A full-featured Mattermost chat application, powered by Docker Compose and PostgreSQL, with persistent storage and isolated networking.
+
+> ⚙️ A full-featured Mattermost chat application, powered by Docker Compose and PostgreSQL, with persistent storage and isolated networking.
+
+# Mattermost Chat Application
+
 This Docker Compose setup provides a complete Mattermost chat application with PostgreSQL database.
 
 ## What's Included
