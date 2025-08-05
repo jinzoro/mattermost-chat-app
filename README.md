@@ -8,8 +8,6 @@
 
 > ⚙️ A full-featured Mattermost chat application, powered by Docker Compose and PostgreSQL, with persistent storage and isolated networking.
 
-> ⚙️ A full-featured Mattermost chat application, powered by Docker Compose and PostgreSQL, with persistent storage and isolated networking.
-
 # Mattermost Chat Application
 
 This Docker Compose setup provides a complete Mattermost chat application with PostgreSQL database.
