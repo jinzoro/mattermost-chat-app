@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:${POSTGRES_VERSION:-15-alpine}
+    image: postgres:${POSTGRES_VERSION:-13-alpine}
     container_name: mattermost-postgres
     restart: unless-stopped
     environment:
