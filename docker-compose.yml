@@ -2,33 +2,39 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:13-alpine
+    image: postgres:${POSTGRES_VERSION:-15-alpine}
     container_name: mattermost-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: mattermost
-      POSTGRES_USER: mmuser
-      POSTGRES_PASSWORD: mmuser_password
+      POSTGRES_DB: ${POSTGRES_DB:-mattermost}
+      POSTGRES_USER: ${POSTGRES_USER:-mmuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Please set POSTGRES_PASSWORD in .env file}
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - mattermost
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mmuser} -d ${POSTGRES_DB:-mattermost}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   mattermost:
-    image: mattermost/mattermost-team-edition:latest
+    image: mattermost/mattermost-team-edition:${MATTERMOST_VERSION:-latest}
     container_name: mattermost-app
     restart: unless-stopped
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
-      - "8065:8065"
+      - "${MATTERMOST_PORT:-8065}:8065"
     environment:
       MM_SQLSETTINGS_DRIVERNAME: postgres
-      MM_SQLSETTINGS_DATASOURCE: "postgres://mmuser:mmuser_password@postgres:5432/mattermost?sslmode=disable&connect_timeout=10"
-      MM_SERVICESETTINGS_SITEURL: "http://localhost:8065"
-      MM_SERVICESETTINGS_ENABLELOCALMODE: "true"
-      MM_SERVICESETTINGS_ENABLEDEVELOPER: "true"
+      MM_SQLSETTINGS_DATASOURCE: "postgres://${POSTGRES_USER:-mmuser}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-mattermost}?sslmode=disable&connect_timeout=10"
+      MM_SERVICESETTINGS_SITEURL: "${SITE_URL:-http://localhost:8065}"
+      MM_SERVICESETTINGS_ENABLELOCALMODE: "${MM_SERVICESETTINGS_ENABLELOCALMODE:-true}"
+      MM_SERVICESETTINGS_ENABLEDEVELOPER: "${MM_SERVICESETTINGS_ENABLEDEVELOPER:-false}"
     volumes:
       - mattermost_config:/mattermost/config
       - mattermost_data:/mattermost/data
@@ -38,6 +44,12 @@ services:
       - mattermost_bleve_indexes:/mattermost/bleve-indexes
     networks:
       - mattermost
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8065/api/v4/system/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
 
 volumes:
   postgres_data:
