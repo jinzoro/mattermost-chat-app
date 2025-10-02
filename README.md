@@ -17,6 +17,7 @@ This Docker Compose setup provides a complete Mattermost chat application with P
 - **Environment Variables**: Secure configuration management
 - **Health Checks**: Automatic service monitoring
 - **Makefile**: Easy management commands
+- **Watchtower**: Automated updating running Docker containers
 - **Production Ready**: Additional production configuration available
 
 ## ⚡ Quick Start
