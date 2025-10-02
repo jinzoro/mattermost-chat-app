@@ -17,6 +17,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
 
   mattermost:
     image: mattermost/mattermost-team-edition:${MATTERMOST_VERSION:-latest}
@@ -48,6 +50,20 @@ services:
       timeout: 10s
       retries: 5
       start_period: 90s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: mattermost-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+      --interval 3600
+      --cleanup
+      --label-enable
+      --rolling-restart
 
 volumes:
   postgres_data:
